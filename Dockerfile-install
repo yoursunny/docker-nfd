@@ -1,0 +1,2 @@
+FROM armv7/armhf-ubuntu_core
+COPY nfd-install /

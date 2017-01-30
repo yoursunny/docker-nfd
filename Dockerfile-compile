@@ -18,7 +18,3 @@ RUN git clone --recursive https://github.com/named-data/ndn-tools.git && \
     ./waf configure --boost-libs=/usr/lib/$(dpkg-architecture -qDEB_HOST_MULTIARCH) && \
     ./waf -j1 && \
     ./waf install
-RUN mkdir /target && \
-    cd ndn-cxx && ./waf install --destdir=/target && cd .. && \
-    cd NFD && ./waf install --destdir=/target && cd .. && \
-    cd ndn-tools && ./waf install --destdir=/target && cd ..
