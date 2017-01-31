@@ -2,9 +2,9 @@
 VERSION=$(date +%Y%m%d)
 sudo rm -rf $PWD/nfd-install
 
-docker build -t nfd-compile:$VERSION -f Dockerfile-compile .
+docker build -t yoursunny/armhf-nfd-compile:$VERSION -f Dockerfile-compile .
 
-docker run --name nfd-install-$VERSION -v $PWD/nfd-install:/target nfd-compile:$VERSION bash -c "
+docker run --name nfd-install-$VERSION -v $PWD/nfd-install:/target yoursunny/armhf-nfd-compile:$VERSION bash -c "
   cd ndn-cxx && ./waf install --destdir=/target && cd ..;
   cd NFD && ./waf install --destdir=/target && cd ..;
   cd ndn-tools && ./waf install --destdir=/target && cd ..;
@@ -18,5 +18,5 @@ docker rm nfd-install-$VERSION
   sudo rm nfd-install/deps.txt
   echo COPY nfd-install /
 ) > Dockerfile-install
-docker build -t nfd-install:$VERSION -f Dockerfile-install .
+docker build -t yoursunny/armhf-nfd-install:$VERSION -f Dockerfile-install .
 sudo rm -rf nfd-install
