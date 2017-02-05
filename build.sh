@@ -8,7 +8,7 @@ docker run --name nfd-install-$VERSION -v $PWD/nfd-install:/target yoursunny/arm
   cd ndn-cxx && ./waf install --destdir=/target && cd ..;
   cd NFD && ./waf install --destdir=/target && cd ..;
   cd ndn-tools && ./waf install --destdir=/target && cd ..;
-  find /target -type f | xargs ldd 2>/dev/null | grep /usr/lib | awk '{ print \$3 }' | sort -u | xargs dpkg -S | cut -d: -f1 > /target/deps.txt
+  find /target -type f | xargs ldd 2>/dev/null | grep /lib/ | awk '{ print \$3 }' | sort -u | xargs dpkg -S | cut -d: -f1 | sort -u > /target/deps.txt
 "
 docker rm nfd-install-$VERSION
 
@@ -19,4 +19,4 @@ docker rm nfd-install-$VERSION
   echo COPY nfd-install /
 ) > Dockerfile-install
 docker build -t yoursunny/armhf-nfd-install:$VERSION -f Dockerfile-install .
-sudo rm -rf nfd-install
+sudo rm -rf $PWD/nfd-install
