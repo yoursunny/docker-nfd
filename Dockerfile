@@ -39,3 +39,4 @@ RUN cd /usr/local/etc/ndn && \
     echo 'transport=tcp4://127.0.0.1:6363' > client.conf
 CMD ["/usr/local/bin/nfd"]
 HEALTHCHECK CMD nfdc status || exit 1
+EXPOSE 6363/udp 6363/tcp 9696/tcp
