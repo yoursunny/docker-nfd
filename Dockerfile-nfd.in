@@ -1,0 +1,8 @@
+FROM MYBASEIMG
+RUN cd /usr/local/etc/ndn && \
+    cp nfd.conf.sample nfd.conf && \
+    infoedit -f nfd.conf -s face_system.udp.mcast -v no && \
+    infoedit -f nfd.conf -d face_system.ether
+ENTRYPOINT ["/usr/local/bin/nfd"]
+HEALTHCHECK CMD nfdc status || exit 1
+EXPOSE 6363/udp 6363/tcp 9696/tcp

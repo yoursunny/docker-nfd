@@ -1,0 +1,2 @@
+FROM MYBASEIMG
+ENTRYPOINT ["/usr/local/bin/MYCMD"]
