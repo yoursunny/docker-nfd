@@ -1,2 +1,2 @@
-FROM MYBASEIMG
-ENTRYPOINT ["/usr/local/bin/MYCMD"]
+FROM {#BASEIMG#}
+ENTRYPOINT ["/usr/local/bin/{#CMD#}"]

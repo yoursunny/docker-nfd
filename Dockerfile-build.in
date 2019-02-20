@@ -1,24 +1,25 @@
-FROM ubuntu:18.04 AS compile
+FROM {#BALENAIMG#}build AS compile
+RUN [ "cross-build-start" ]
 RUN apt-get update && \
     apt-get install -qq build-essential dpkg-dev git libboost-all-dev libpcap-dev libsqlite3-dev libssl-dev pkg-config
 WORKDIR /root
 RUN git clone --depth=1 --recursive https://github.com/named-data/ndn-cxx.git && \
     cd ndn-cxx && \
     ./waf configure && \
-    ./waf -j4 && \
+    ./waf -j{#JOBS#} && \
     ./waf install && \
     ./waf install --destdir=/target && \
     ldconfig
 RUN git clone --depth=1 --recursive https://github.com/named-data/NFD.git && \
     cd NFD && \
     ./waf configure && \
-    ./waf -j4 && \
+    ./waf -j{#JOBS#} && \
     ./waf install && \
     ./waf install --destdir=/target
 RUN git clone --depth=1 --recursive https://github.com/named-data/ndn-tools.git && \
     cd ndn-tools && \
     ./waf configure && \
-    ./waf -j4 && \
+    ./waf -j{#JOBS#} && \
     ./waf install && \
     ./waf install --destdir=/target
 RUN git clone --depth=1 --recursive https://github.com/NDN-Routing/infoedit.git && \
@@ -28,6 +29,8 @@ RUN git clone --depth=1 --recursive https://github.com/NDN-Routing/infoedit.git 
     cp infoedit /target/usr/local/bin/infoedit
 RUN find /target -type f | xargs ldd 2>/dev/null | grep /lib/ | awk '{ print $3 }' | sort -u | xargs dpkg -S | cut -d: -f1 | sort -u > /target/deps.txt
 
-FROM ubuntu:18.04
+FROM {#BALENAIMG#}run
 COPY --from=compile /target /
+RUN [ "cross-build-start" ]
 RUN apt-get update && apt-get install -qq $(cat /deps.txt) && apt-get clean && rm /deps.txt
+RUN [ "cross-build-end" ]

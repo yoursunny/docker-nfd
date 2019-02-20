@@ -1,4 +1,4 @@
-FROM MYBASEIMG
+FROM {#BASEIMG#}
 RUN cd /usr/local/etc/ndn && \
     cp nfd.conf.sample nfd.conf && \
     infoedit -f nfd.conf -s face_system.udp.mcast -v no && \
