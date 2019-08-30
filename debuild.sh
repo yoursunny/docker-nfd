@@ -1,10 +1,14 @@
 #!/bin/bash
 source config.sh
 ARCH=$1
-BALENAIMG=${balenaImgs[$ARCH]}
-if [[ -z $BALENAIMG ]]; then
-  echo 'Bad ARCH '$ARCH >/dev/stderr
-  exit 2
+if [[ -z $2 ]]; then
+  BALENAIMG=${balenaImgs[$ARCH]}
+  if [[ -z $BALENAIMG ]]; then
+    echo 'Bad ARCH '$ARCH >/dev/stderr
+    exit 2
+  fi
+else
+  BALENAIMG=balenalib/$2-
 fi
 OUTPUTDIR=$(pwd)/deb-$ARCH
 
